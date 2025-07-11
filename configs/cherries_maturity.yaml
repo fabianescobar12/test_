@@ -1,0 +1,11 @@
+path: /mnt/beegfs/home/fescobar/Proyectos/dataset_ripeness_final
+train: train/images
+val:   val/images
+test:  test/images
+names:
+  0: cherry_ripe
+  1: cherry_halfripe
+  2: cherry_unripe
+
+
+

@@ -1,0 +1,50 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/pytorch:24.01-py3
+
+%labels
+    Author Fabián Escobar, Camilo Aliste
+    Version 1.0
+
+%files
+    requirements.txt requirements.txt
+
+%post
+    echo "Instalando dependencias del sistema..."
+    apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        wget \
+        curl \
+        vim \
+        ca-certificates \
+        libssl-dev \
+        libffi-dev \
+        libbz2-dev \
+        libreadline-dev \
+        libsqlite3-dev \
+        zlib1g-dev \
+        libncursesw5-dev \
+        libgdbm-dev \
+        liblzma-dev \
+        libnss3-dev \
+        && rm -rf /var/lib/apt/lists/*
+
+    echo "Actualizando pip y setuptools..."
+    python3 -m pip install --upgrade pip setuptools wheel
+
+    echo "Instalando paquetes de requirements.txt..."
+    pip install --no-cache-dir -r /tmp/requirements.txt
+
+%environment
+    export LC_ALL=C
+    export LANG=C
+    export PATH=/usr/local/bin:$PATH
+    export PYTHONUNBUFFERED=1
+
+%runscript
+    exec python3 "$@"
+
+%test
+    echo "Verificando instalación de Python y paquetes..."
+    python3 --version
+    pip list
